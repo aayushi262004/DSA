@@ -12,9 +12,7 @@ public:
                 }
             }else   continue;
         }
-        for(int c:nums){
-            if(c==0) return -1; 
-        }
+     if(nums[n-2]==0 || nums[n-1]==0)   return -1;   
     return cnt;
     }
 };
