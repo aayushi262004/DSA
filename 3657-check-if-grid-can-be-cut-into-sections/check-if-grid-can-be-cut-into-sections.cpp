@@ -1,7 +1,7 @@
 class Solution {
 private:
     bool canMake(vector<pair<int,int>>& arr){
-        sort(arr.begin(),arr.end()); // i am sorting on the basis of the start time
+        sort(arr.begin(),arr.end()); 
         int count=0;
         int e=arr[0].first+1;
         for(auto it:arr){
