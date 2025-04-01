@@ -1,18 +1,20 @@
 class Solution {
+    #define ll long long
+
+    ll findMaxPoints(vector<vector<int>>& questions,int pos,vector<ll>& mem){
+        if(pos >= questions.size())
+            return 0;
+        if(mem[pos]!=-1)
+            return mem[pos];
+        
+        ll exclude = findMaxPoints(questions,pos+1,mem);
+        ll include = questions[pos][0] + findMaxPoints(questions,pos+questions[pos][1]+1,mem);
+        return mem[pos] = max(exclude,include);
+    }
 public:
     long long mostPoints(vector<vector<int>>& questions) {
         int n = questions.size();
-        std::vector<long long> dp(n,0);
-        dp[n-1] = questions[n-1][0];
-        
-        for (int i{n-2}; i >= 0; i--) {
-            int point{questions[i][0]}, power{questions[i][1]};
-
-            if (i + power + 1 < n) {
-                dp[i] += dp[i + power + 1];
-            }
-            dp[i] = max(dp[i] + point, dp[i+1]);
-        }
-        return dp[0];
+        vector<ll> mem(n,-1);
+        return findMaxPoints(questions,0,mem);
     }
 };
