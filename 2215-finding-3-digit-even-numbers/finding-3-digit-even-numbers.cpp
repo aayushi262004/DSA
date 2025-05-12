@@ -1,28 +1,28 @@
 class Solution {
 public:
     vector<int> findEvenNumbers(vector<int>& digits) {
-       int n=digits.size();
-       set<int>arr;
-       for(int i=0;i<n;i++){
-        for(int j=0;j<n;j++){
-            if(j==i) continue;
-            for(int k=0;k<n;k++){
-                if(k==i || k==j)continue;
-
-            int d1=digits[i];
-            int d2=digits[j];
-            int d3=digits[k];
-
-            if(d1==0)continue;
-            int ans=d1*100+d2*10+d3;
-            if(ans%2==0){
-                arr.insert(ans);
-            }
-            }
+        vector<int>res;
+        vector<int>mpp(10,0);
+        for(int c:digits){
+            mpp[c]++;
         }
-       }
-    vector<int>res(arr.begin(),arr.end());
+        for(int i=1;i<=9;i++){
+            if(mpp[i]==0) continue;
+            mpp[i]--;
+            for(int j=0;j<=9;j++){
+                if(mpp[j]==0)continue;
+                mpp[j]--;
+                for(int k=0;k<=8;k+=2){
+                    if(mpp[k]==0)continue;
+                    mpp[k]--;
+                    int num= i*100 + j*10 + k;
+                    res.push_back(num);
+                    mpp[k]++;
+                }
+            mpp[j]++;
+            }
+        mpp[i]++;
+        }
     return res;
-
     }
 };
