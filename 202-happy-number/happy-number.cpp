@@ -4,22 +4,22 @@ public:
         unordered_set<int>visit;
         while(visit.find(n)==visit.end()){
             visit.insert(n);
-            n=getNextNumber(n);
-            if(n==1){
-                return true;
-            }
+        
+        n=getnumber(n);
+        if(n==1){
+            return true;
+        }
         }
     return false;
     }
-private:
-    int getNextNumber(int n){
+private :
+    int getnumber(int n){
         int output=0;
         while(n>0){
-            int digit = n%10;
-            output+=digit*digit;
-            n=n/10;
+        int digit=n%10;
+        output+=digit*digit;
+        n=n/10;
         }
-    return output;
+        return output;
     }
-
 };
