@@ -11,19 +11,16 @@
  */
 class Solution {
 public:
-    void sumNumbers(TreeNode *root, int value,int &sum){
-        if(!root) return;
-        value=value*10+ root->val;//4
-        if(!root->left && !root->right){
-            sum+=value;
-        }
-        sumNumbers(root->left, value,sum);//(9,4,0)
-        sumNumbers(root->right,value,sum);
+    void findSum(TreeNode* root, int value, int &sum){
+        if(root==NULL)return;
+        value=value*10+root->val;
+        if(!root->left && !root->right) sum+=value;
+        if(root->left)findSum(root->left,value,sum);
+        if(root->right)findSum(root->right,value,sum);
     }
-        int sumNumbers(TreeNode* root){
-            int sum=0;
-            sumNumbers(root,0,sum);
-            return sum;
-        }
-    
+    int sumNumbers(TreeNode* root) {
+        int sum=0;
+        findSum(root,0,sum);
+        return sum;
+    }
 };
