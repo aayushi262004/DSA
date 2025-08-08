@@ -1,27 +1,40 @@
 class Solution {
 public:
-    double soupServings(int n) {
-        int m = ceil(n / 25.0);
-        unordered_map<int, unordered_map<int, double>> dp;
-
-        function<double(int, int)> calculateDP = [&](int i, int j) -> double {
-            return (dp[max(0, i - 4)][j] + dp[max(0, i - 3)][j - 1] +
-                    dp[max(0, i - 2)][max(0, j - 2)] + dp[i - 1][max(0, j - 3)]) /
-                   4;
-        };
-
-        dp[0][0] = 0.5;
-        for (int k = 1; k <= m; k++) {
-            dp[0][k] = 1;
-            dp[k][0] = 0;
-            for (int j = 1; j <= k; j++) {
-                dp[j][k] = calculateDP(j, k);
-                dp[k][j] = calculateDP(k, j);
-            }
-            if (dp[k][k] > 1 - 1e-5) {
-                return 1;
-            }
+    vector<pair<int, int>> serves{{100, 0}, {75, 25}, {50, 50}, {25, 75}};
+    vector<vector<double>> t;
+    
+    double solve(double A, double B) {
+        if(A <= 0 && B <= 0)
+            return 0.5;
+        
+        if(A <= 0)
+            return 1.0;
+        if(B <= 0)
+            return 0.0;
+        
+        if(t[A][B] != -1.0)
+            return t[A][B];
+        
+        double probability = 0.0;
+        
+        for(auto &p : serves) {
+            
+            double A_serve  = p.first;
+            double B_serve  = p.second;
+            
+            probability += 0.25*solve(A-A_serve, B-B_serve);
+            
         }
-        return dp[m][m];
+        
+        return t[A][B] = probability;
+    }
+    
+    double soupServings(int n) {
+        
+        if(n >= 5000)
+            return 1.0;
+        
+        t.resize(n+1, vector<double>(n+1, -1.0));
+        return solve(n, n);
     }
 };
