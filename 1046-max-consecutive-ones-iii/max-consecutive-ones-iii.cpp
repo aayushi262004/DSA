@@ -1,23 +1,28 @@
 class Solution {
 public:
     int longestOnes(vector<int>& nums, int k) {
-        int left = 0, maxLength = 0;
-        queue<int> zeroPos;   // stores indices of zeros
-
-        for (int right = 0; right < nums.size(); ++right) {
-            if (nums[right] == 0) {
-                zeroPos.push(right);
+        int n = nums.size();
+        int cnt = 0;
+        int l = 0;
+        int r =0;
+        int ans = 0;
+        while(r<n)
+        {
+           if(nums[r]==0)
+           {
+            cnt++;
+           }
+           if(cnt>k)
+           {
+            while(cnt>k)
+            {
+                if(nums[l]==0) cnt--;
+                l++;
             }
-
-            // If zero count exceeds k, move left to 1+position of earliest zero
-            if (zeroPos.size() > k) {
-                left = zeroPos.front() + 1;
-                zeroPos.pop();
-            }
-
-            maxLength = max(maxLength, right - left + 1);
+           }
+            ans = max(ans,r-l+1);
+           r++;
         }
-
-        return maxLength;
-    }
+        return ans;
+    }
 };
