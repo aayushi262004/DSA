@@ -12,14 +12,14 @@ public:
            {
             cnt++;
            }
-           if(cnt>k)
-           {
+           //if(cnt>k)
+           //{
             while(cnt>k)
             {
                 if(nums[l]==0) cnt--;
                 l++;
             }
-           }
+          // }
             ans = max(ans,r-l+1);
            r++;
         }
