@@ -1,27 +1,25 @@
 class Solution {
 public:
-    typedef pair<char,int>P;
-    struct maxheap_comparator{
-        bool operator()(P &p1,P &p2){
-            return p1.second<p2.second;
-        }
-    };
     string frequencySort(string s) {
-       
+        int n=s.size();
         unordered_map<char,int>mpp;
-        for(auto &c:s){
-            mpp[c]++;
+        priority_queue<pair<int,char>>pq;
+        for(int i=0;i<n;i++){
+            mpp[s[i]]++;
         }
-        priority_queue<P,vector<P>,maxheap_comparator>pq;
-        for(auto &it:mpp){
-            pq.push({it.first,it.second});
+        for(auto c:mpp){
+            pq.push({c.second, c.first});
         }
-        string result="";
+        string res="";
         while(!pq.empty()){
-            P temp=pq.top();
+            int freq=pq.top().first;
+            char ch=pq.top().second;
+            while(freq){
+                res+=ch;
+                freq--;
+            }
             pq.pop();
-            result+=string(temp.second,temp.first);
         }
-    return result;
+    return res;    
     }
 };
