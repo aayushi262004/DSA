@@ -1,24 +1,28 @@
 class Solution {
 public:
-    int findTargetSumWays(vector<int>& nums, int target) {
-        int totalSum = accumulate(nums.begin(), nums.end(), 0);
-        if (abs(target) > totalSum || (totalSum + target) % 2 != 0) return 0;
-
-        int sum = (totalSum + target) / 2;
-        int n = nums.size();
-        vector<vector<int>> dp(n + 1, vector<int>(sum + 1, 0));
-
-        for (int i = 0; i <= n; i++) dp[i][0] = 1;
-
-        for (int i = 1; i <= n; i++) {
-            for (int j = 0; j <= sum; j++) {
-                if (nums[i - 1] <= j) {
-                    dp[i][j] = dp[i - 1][j - nums[i - 1]] + dp[i - 1][j];
-                } else {
-                    dp[i][j] = dp[i - 1][j];
+    int solve(vector<int>& nums, int val){
+        int n=nums.size();
+        vector<vector<int>>dp(n+1,vector<int>(val+1,0));
+        dp[0][0]=1;
+        for(int i=1;i<=n;i++){
+            for(int j=0;j<=val;j++){
+                if(nums[i-1]<=j){
+                    dp[i][j]=dp[i-1][j-nums[i-1]] + dp[i-1][j];
+                }else{
+                dp[i][j]=dp[i-1][j];
                 }
             }
         }
-        return dp[n][sum];
+        return dp[n][val];
+    }
+    int findTargetSumWays(vector<int>& nums, int target) {
+        int sum=0;
+        sum=accumulate(nums.begin(),nums.end(),0);
+        ////////edge case (jo tu phir bhul gyiiiii)
+        if(sum - target < 0 || (sum - target) % 2 != 0)
+    return 0;
+    ////////////////////////////////////////////////////////////////////////////
+        int subset_sum=(sum-target)/2;
+        return solve(nums,subset_sum);
     }
 };
