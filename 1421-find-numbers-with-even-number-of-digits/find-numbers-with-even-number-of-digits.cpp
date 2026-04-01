@@ -1,12 +1,12 @@
 class Solution {
 public:
     int findNumbers(vector<int>& nums) {
+        int n=nums.size();
         int cnt=0;
-        for(int i=0;i<nums.size();i++){
-            string val=to_string(nums[i]);
-            int size=val.size();
-            if(size%2==0) cnt++;
+        for(int i=0;i<n;i++){
+            int val= log10(nums[i])+1;
+            if(val%2 ==0)   cnt++;
         }
-        return cnt;
+    return cnt;
     }
 };
