@@ -11,16 +11,15 @@
  */
 class Solution {
 public:
-void traverse(vector<int>&vec, TreeNode *root){
-    if(root==NULL) return ;
-    vec.push_back(root->val);
-    traverse(vec,root->left);
-    traverse (vec,root->right);
-}
+    void traverse(TreeNode* root, vector<int>& ans){
+        if(root== NULL) return;
+        ans.push_back(root->val);
+        traverse(root->left,ans);
+        traverse(root->right,ans);
+    }
     vector<int> preorderTraversal(TreeNode* root) {
-        vector<int>vec;
-       traverse(vec,root);
-       return vec;
-
+        vector<int>ans;
+        traverse(root, ans);
+        return ans;
     }
 };
