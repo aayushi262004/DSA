@@ -1,31 +1,52 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
 class Solution {
 public:
-    bool isPalindrome(ListNode* head) {
-        ListNode*temp=head;
-        stack<int>stk;
-        while(temp->next!=NULL){
-            stk.push(temp->val);
-            temp=temp->next;
+
+    ListNode* reverseList(ListNode* head){
+        ListNode* prev = NULL;
+        ListNode* curr = head;
+
+        while(curr != NULL){
+            ListNode* nextNode = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = nextNode;
         }
-        stk.push(temp->val);
-        temp=head;
-        while(temp->next!=NULL){
-            if(temp->val!=stk.top()){
+        return prev;
+    }
+
+    bool isPalindrome(ListNode* head) {
+
+        if(head == NULL || head->next == NULL)
+            return true;
+
+        // Step 1: find middle
+        ListNode* slow = head;
+        ListNode* fast = head;
+
+        while(fast->next && fast->next->next){
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+
+        // Step 2: reverse second half
+        ListNode* second = reverseList(slow->next);
+
+        // Step 3: compare
+        ListNode* first = head;
+        ListNode* temp = second; // for restoring later
+
+        while(second != NULL){
+            if(first->val != second->val){
+                reverseList(temp); // restore once
                 return false;
             }
-            stk.pop();
-            temp=temp->next;
+            first = first->next;
+            second = second->next;
         }
+
+        // Step 4: restore (optional)
+        reverseList(temp);
+
         return true;
     }
 };
