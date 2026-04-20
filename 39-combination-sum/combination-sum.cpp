@@ -1,23 +1,24 @@
 class Solution {
 public:
-    void findCombinations(int ind, int target, vector<int>&arr, vector<vector<int>>&ans, vector<int>&ds){
-        if(ind == arr.size()){
-            if(target==0){
-                ans.push_back(ds);
-            }
+    void makeCombination(vector<int>& candidates, int target, int idx, vector<int>& comb, int total, vector<vector<int>>& res){
+        if(total == target){
+            res.push_back(comb);
             return;
         }
-        if(arr[ind]<=target){
-            ds.push_back(arr[ind]);
-            findCombinations(ind,target-arr[ind],arr,ans,ds);
-            ds.pop_back();
+
+        if(total>target || idx>= candidates.size()){
+            return;
         }
-        findCombinations(ind+1,target,arr,ans,ds);
+        comb.push_back(candidates[idx]);
+        makeCombination(candidates, target, idx, comb, total+candidates[idx], res);
+        comb.pop_back();
+        makeCombination(candidates, target, idx+1, comb, total,res);
     }
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-       vector<vector<int>>ans;
-       vector<int>ds;
-       findCombinations(0,target,candidates,ans,ds);
-       return ans; 
+        vector<vector<int>>res;
+        vector<int>comb;
+        makeCombination(candidates, target, 0, comb,0,res);
+        return res;
+        
     }
 };
