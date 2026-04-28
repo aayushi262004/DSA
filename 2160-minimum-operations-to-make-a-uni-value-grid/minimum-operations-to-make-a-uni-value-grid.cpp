@@ -1,32 +1,35 @@
 class Solution {
 public:
     int minOperations(vector<vector<int>>& grid, int x) {
-        vector<int>vec;
-        for(int i=0;i<grid.size();i++){
-            for(int j=0;j<grid[0].size();j++){
-                vec.push_back(grid[i][j]);
+        int n = grid.size(), m = grid[0].size();
+        int N = n * m;
+        int freq[10001] = {0};
+        int mn = grid[0][0], mx = mn;
+
+        for (const auto& row : grid) {
+            for (int val : row) {
+                if ((val - grid[0][0]) % x != 0) return -1;
+                freq[val]++;
+                mn = min(mn, val);
+                mx = max(mx, val);
             }
         }
-        sort(vec.begin(),vec.end());
-        int mid=vec.size()/2;
-        int cnt=0;
-        for(int k=0;k<mid;k++){
-            while(vec[k]<vec[mid]){
-                vec[k]+=x;
-                cnt++;
+
+        int target = (N + 1) / 2;
+        int acc = 0, median = mn;
+
+        for (int i = mn; i <= mx; i += x) {
+            acc += freq[i];
+            if (acc >= target) {
+                median = i;
+                break;
             }
         }
-         for(int k=mid+1;k<vec.size();k++){
-            while(vec[k]>vec[mid]){
-                vec[k]-=x;
-                cnt++;
-            }
-        }
-        int val=0;
-        for(int s=0;s<vec.size();s++){
-            if(vec[s]==vec[0]) val++;
-        }
-        if (val==vec.size()) return cnt;
-        return -1;
+
+        int ops = 0;
+        for (int i = mn; i <= mx; i += x)
+            ops += abs(i - median) / x * freq[i];
+
+        return ops;
     }
 };
