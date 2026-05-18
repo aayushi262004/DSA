@@ -1,22 +1,22 @@
 class Solution {
 public:
     string countAndSay(int n) {
-        if (n==1) return "1";
-        string res="1";
-        for(int i=2;i<=n;i++){
-            string curr="";
-            int count=1;
-            for(int j=1;j<res.size();j++){
-                if(res[j]==res[j-1]){
-                    count++;
-                }else{
-                    curr+=to_string(count)+res[j-1];
-                    count=1;
-                }
-            }
-                curr+=to_string(count)+res.back();
-                res=curr;
-        }
-return res;
+       if(n == 1){
+        return "1";
+       } 
+       string say = countAndSay(n-1);
+       string result  = "";
+       for(int i = 0;i< say.length();i++){
+          char ch = say[i];
+          int count = 1;
+          while(i< say.length()-1 && say[i] == say[i+1]){
+             count++;
+             i++;
+
+          }
+          result+= to_string(count) + string(1,ch);
+
+       }
+        return result;
     }
 };
