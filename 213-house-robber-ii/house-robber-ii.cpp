@@ -1,28 +1,47 @@
 class Solution {
 public:
-    // 👇 THIS is the solve function
-    int solve(vector<int>& nums, int start, int end) {
-        int prev2 = 0;
-        int prev1 = 0;
-
-        for(int i = start; i <= end; i++){
-            int curr = max(prev2 + nums[i], prev1);
-            prev2 = prev1;
-            prev1 = curr;
-        }
-
-        return prev1;
-    }
-
-    // 👇 Main function (LeetCode calls this)
     int rob(vector<int>& nums) {
+
         int n = nums.size();
 
-        if(n == 1) return nums[0];
+        if(n == 1)
+            return nums[0];
 
-        int case1 = solve(nums, 0, n-2); // exclude last
-        int case2 = solve(nums, 1, n-1); // exclude first
+        vector<int> dp1(n, 0);
+        vector<int> dp2(n, 0);
 
-        return max(case1, case2);
+        // CASE 1 -> houses 0 to n-2
+
+        dp1[0] = nums[0];
+
+        for(int i = 1; i < n-1; i++) {
+
+            int take = nums[i];
+
+            if(i > 1)
+                take += dp1[i-2];
+
+            int notTake = dp1[i-1];
+
+            dp1[i] = max(take, notTake);
+        }
+
+        // CASE 2 -> houses 1 to n-1
+
+        dp2[1] = nums[1];
+
+        for(int i = 2; i < n; i++) {
+
+            int take = nums[i];
+
+            if(i > 2)
+                take += dp2[i-2];
+
+            int notTake = dp2[i-1];
+
+            dp2[i] = max(take, notTake);
+        }
+
+        return max(dp1[n-2], dp2[n-1]);
     }
 };
