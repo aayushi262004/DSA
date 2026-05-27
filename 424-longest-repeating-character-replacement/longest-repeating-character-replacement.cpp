@@ -1,26 +1,23 @@
 class Solution {
 public:
     int characterReplacement(string s, int k) {
-        int i = 0;
-        int ans = 0;
-        int n = s.length();
-        int maxFreq = 0;
-        unordered_map<char,int> freq;
-
-        for (int j = 0; j < n; j++) {
-
-            freq[s[j]]++;                     // FIX 1
-            maxFreq = max(maxFreq, freq[s[j]]); // track most frequent char
-
-            // If window needs more than k replacements → shrink
-            while ((j - i + 1) - maxFreq > k) {   // FIX 2
-                freq[s[i]]--;
-                i++;
+        int n = s.size();
+        int left = 0;
+        int maxlen = INT_MIN;
+        int maxi =INT_MIN;
+        unordered_map<char,int>mpp;
+        for(int right =0;right<n;right++){
+            mpp[s[right]]++;
+            maxlen = max(maxlen, mpp[s[right]]);
+            if(right-left+1 -maxlen >k){
+                mpp[s[left]]--;
+                if(mpp[s[left]] == 0){
+                    mpp.erase(s[left]);
+                }
+                left++;
             }
-
-            ans = max(ans, j - i + 1);
+        maxi = max(maxi,right-left+1);
         }
-
-        return ans;
-    }
+        return maxi;
+            }
 };
