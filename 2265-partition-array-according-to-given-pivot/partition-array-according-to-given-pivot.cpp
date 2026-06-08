@@ -1,52 +1,27 @@
-//approach-2
-//TC:O(n)+O(n)=O(n);
-//SC:O(n);
 class Solution {
 public:
     vector<int> pivotArray(vector<int>& nums, int pivot) {
-      int n=nums.size();
-      int low=0;int high=n-1;
-      vector<int>res(n);
-      for(int i=0,j=n-1;i<n;i++,j--){
-        if(nums[i]<pivot){
-            res[low]=nums[i];
-            low++;
-        }
-        if(nums[j]>pivot){
-            res[high]=nums[j];
-            high--;
-        }
-      }
-      while(low<=high){
-        res[low]=pivot;
-        low++;
-      }
-      return res;
-    }
-};
+        list<int> less;
+        list<int> equal;
+        list<int> greater;
 
-
-//approach-1
-// TC:O(n+n)=O(n);
-//SC:O(n);
-class Solution {
-public:
-    vector<int> pivotArray(vector<int>& nums, int pivot) {
-        int n=nums.size();
-       vector<int>small;
-       vector<int>pivott;
-       vector<int>large;
-       for(int i=0;i<n;i++){
-        if(nums[i]<pivot){
-            small.push_back(nums[i]);
-        }else if (nums[i]==pivot){
-            pivott.push_back(nums[i]);
-        }else{
-            large.push_back(nums[i]);
+        for (auto num : nums) {
+            if (num < pivot) {
+                less.push_back(num);
+            } else if (num > pivot) {
+                greater.push_back(num);
+            } else {
+                equal.push_back(num);
+            }
         }
-       } 
-       small.insert(small.end(),pivott.begin(),pivott.end());
-       small.insert(small.end(),large.begin(),large.end());
-       return small;
+
+        less.insert(less.end(), equal.begin(), equal.end());
+        less.insert(less.end(), greater.begin(), greater.end());
+
+        vector<int> ans;
+        for (auto num : less) {
+            ans.push_back(num);
+        }
+        return ans;
     }
 };
