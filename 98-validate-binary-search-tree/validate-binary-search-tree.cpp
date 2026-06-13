@@ -11,13 +11,20 @@
  */
 class Solution {
 public:
-    bool helper(TreeNode*root,long long minVal, long long maxVal){
-        if(!root)return true;
-        if(root->val<=minVal || root->val>=maxVal) return false;
-
-        return helper(root->left,minVal, root->val) && helper(root->right,root->val,maxVal);
-            }
+    void traversal(TreeNode* root, vector<int>&ans){
+        if(root == NULL)return ;
+        traversal(root->left,ans);
+        ans.push_back(root->val);
+        traversal(root->right,ans);
+    }
     bool isValidBST(TreeNode* root) {
-        return helper(root,LLONG_MIN, LLONG_MAX);
+        vector<int>ans;
+        traversal(root,ans);
+        for(int i=1;i<ans.size();i++){
+            if(ans[i]<=ans[i-1]){
+                return false;
+            }
+        }
+    return true;
     }
 };
