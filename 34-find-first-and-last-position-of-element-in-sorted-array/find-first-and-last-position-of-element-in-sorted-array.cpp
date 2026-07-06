@@ -1,25 +1,52 @@
 class Solution {
 public:
-    vector<int> searchRange(vector<int>& nums, int target) {
-        return {binary(nums, target, true), binary(nums, target, false)};
-    }
+    int lowerBound(vector<int>& arr, int n, int x) {
+        int low = 0, high = n - 1;
+        int ans = n;
 
-    int binary(vector<int>& nums, int target, bool findFirst) {
-        int s = 0, e = nums.size() - 1, ans = -1;
-        while (s <= e) {
-            int mid = s + (e - s) / 2;
-            if (target > nums[mid]) {
-                s = mid + 1;
-            } else if (target < nums[mid]) {
-                e = mid - 1;
-            } else {
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+
+            if (arr[mid] >= x) {
                 ans = mid;
-                if (findFirst)
-                    e = mid - 1;
-                else
-                    s = mid + 1;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
             }
         }
+
         return ans;
+    }
+
+    int upperBound(vector<int>& arr, int n, int x) {
+        int low = 0, high = n - 1;
+        int ans = n;
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+
+            if (arr[mid] > x) {
+                ans = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int n = nums.size();
+
+        int lb = lowerBound(nums, n, target);
+
+        // Target not present
+        if (lb == n || nums[lb] != target)
+            return {-1, -1};
+
+        int ub = upperBound(nums, n, target);
+
+        return {lb, ub - 1};
     }
 };
