@@ -1,25 +1,22 @@
 class Solution {
 public:
-    long long find_sum(vector<int>piles,int &mid){
-        long long cnt=0;
-        for(int i=0;i<piles.size();i++){
-             cnt+=(1LL*piles[i]+mid-1)/mid;
-        }
-        return cnt;
-    }
     int minEatingSpeed(vector<int>& piles, int h) {
-        int n=piles.size();
-        if(n>h)return -1;
-        int low=1;
-        int high=*max_element(piles.begin(),piles.end());
-        int ans=0;
+        int n = piles.size();
+        int low =1;
+        int high = *max_element(piles.begin(),piles.end());
+        int ans = INT_MAX;
         while(low<=high){
-            int mid=low+(high-low)/2;
-            if(find_sum(piles,mid)>h){
-                low=mid+1;
+            int mid = low+(high-low)/2;
+        long long hrs =0;
+            for(int i=0;i<n;i++){
+                int val = ceil((double)piles[i]/mid);
+                hrs+=val;
+            }
+            if(hrs<=h){
+                ans = min(ans, mid);
+                high = mid-1;
             }else{
-                high=mid-1;
-                ans=mid;
+                low = mid+1;
             }
         }
     return ans;
