@@ -6,7 +6,7 @@ public:
        stack<string>stk;
        for(int i=0;i<n;i++){
         if(s[i]==' '){
-            if(str!="")
+           if(str!="")
             stk.push(str);
             str="";
         }else{
