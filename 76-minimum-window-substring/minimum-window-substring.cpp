@@ -1,35 +1,46 @@
 class Solution {
 public:
     string minWindow(string s, string t) {
-        if(t.length()>s.length())return"";
-        int n=s.size();
+        int n = s.length();
+        int m = t.length();
+        if(m>n)return "";
+        int left_idx =-1;
+        int right_idx =-1;
+        string str = "";
+        int mini = INT_MAX;
+        int reqdCnt = m;
+        int left =0;
         unordered_map<char,int>mpp;
-        int start=0;
-        int minlen=INT_MAX;
-        for(auto c:t){
-            mpp[c]++;
-        }
-        int left=0;
-        int required=t.size();
-        for(int right=0;right<n;right++){
-            if(mpp[s[right]]>0){
+        for(int i=0;i<m;i++){
+            mpp[t[i]]++;
+            }
+        for(int j =0;j<n;j++){
+
+            if(mpp[s[j]]>0){
+                reqdCnt--;
+            }
+            mpp[s[j]]--;
+        
                
-                required--;
-            }
-             mpp[s[right]]--;
-            while(required==0){
-                int len=right-left+1;
-                if(minlen>len){
-                    minlen=len;
-                    start=left;
+            
+            while(reqdCnt==0){
+                 int len = j-left+1;
+                if(mini >len){
+                    mini = len;
+                    left_idx = left;
+                    right_idx = j;
                 }
-            mpp[s[left]]++;
-            if(mpp[s[left]]>0){
-                required++;
+                mpp[s[left]]++;
+                if(mpp[s[left]]>0){
+                    reqdCnt++;
+                }
+                left++;
             }
-            left++;
+
             }
-        }
-    return minlen==INT_MAX?"":s.substr(start,minlen);
+        
+    if(left_idx != -1 && right_idx != -1)
+         str = s.substr(left_idx, right_idx- left_idx+1);
+    return str;
     }
 };
