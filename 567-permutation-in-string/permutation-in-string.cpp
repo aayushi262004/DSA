@@ -11,7 +11,7 @@ public:
         }
         for(int right =0;right<m;right++){
             mpp2[s2[right]]++;
-            while(right-left+1>=n){
+            while(right-left+1==n){
                 if(mpp1 == mpp2){
                     return true;
                 }else{
